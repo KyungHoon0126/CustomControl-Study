@@ -88,20 +88,26 @@ namespace CustomControlStudy
 
 
         /// <summary>
-        /// 
+        /// 템플릿이 적용될 때 실행.
         /// </summary>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
+            // 이름을 통해 각 파트 컨트롤을 가져온다.
             _thumb = GetTemplateChild(ThumbPartName) as Thumb;
             if (_thumb == null) return;
+            // 이벤트 연결
             _thumb.DragDelta += _thumb_DragDelta;
-
             _rectangle = GetTemplateChild(RectanglePartName) as Rectangle;
             SizeChanged += SimpleSlider_SizeChanged;
+            IsEnabledChanged += SimpleSlider_IsEnabledChanged;
         }
 
+        /// <summary>
+        /// Thumb Drag 이벤트 처리.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _thumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             var pixelDiff = e.HorizontalChange;
@@ -117,14 +123,22 @@ namespace CustomControlStudy
             }
             else
             {
+                // Actual Slider Size
                 var totalSize = ActualWidth;
+                // Current Location / Total Size
                 var ratioDiff = pixelDiff / totalSize;
                 var rangeSize = Maximum - Minimum;
+                // Final Increase Value Calc
                 var rangeDiff = rangeSize * ratioDiff;
                 Value += rangeDiff;
             }
         }
 
+        /// <summary>
+        /// SizeChanged 이벤트 처리.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SimpleSlider_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (Math.Abs(e.NewSize.Width - e.PreviousSize.Width) > 0)
@@ -133,21 +147,33 @@ namespace CustomControlStudy
             }
         }
 
+        /// <summary>
+        /// IsEnabled 변경 이벤트 처리.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SimpleSlider_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, IsEnabled ? "NormalState" : "DisabledState", true);
+        }
+
         private void UpdateControls()
         {
-            double halfTheThumbWith;
+            double halfTheThumbWidth;
 
             if (_thumb == null) return;
-
-            halfTheThumbWith = _thumb.ActualWidth / 2;
-            double totalSize = ActualWidth - halfTheThumbWith * 2;
+            // Thumb ActualWidth Half
+            halfTheThumbWidth = _thumb.ActualWidth / 2;
+            // Control Actual Width - ThumbWidth
+            double totalSize = ActualWidth - halfTheThumbWidth * 2;
             double ratio = totalSize / (Maximum - Minimum);
 
             if (_thumb == null) return;
+            // Move Thumb Location
             Canvas.SetLeft(_thumb, ratio * Value);
 
             if (_rectangle == null) return;
-            _rectangle.Width = ratio * Value + halfTheThumbWith;
+            _rectangle.Width = ratio * Value + halfTheThumbWidth;
         }
     }
 }

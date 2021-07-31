@@ -24,6 +24,9 @@
                                 Height="20" 
                                 Maximum="100"/>
             <TextBlock Text="{Binding Value, ElementName=simpleSlider}"/>
+
+            <ToggleSwitch Header="SimpleSlider"
+                          IsOn="{Binding IsEnabled, ElementName=simpleSlider, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </Page>

@@ -3,12 +3,36 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CustomControlStudy">
 
-    <Style TargetType="local:SimpleSlider">
+    <Style TargetType="local:SimpleSlider" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:SimpleSlider">
                     <Grid Height="8">
-                        <Border Height="8" Background="LightGray"
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="VisualStateGroup">
+                                <VisualState x:Name="NormalState"/>
+                                <VisualState x:Name="DisabledState">
+                                    <VisualState.Setters>
+                                        <Setter Target="PART_Thumb.(Control.Background).(SolidColorBrush.Color)">
+                                            <Setter.Value>
+                                                <Color>LightGray</Color>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Target="PART_Rectangle.(Shape.Fill).(SolidColorBrush.Color)">
+                                            <Setter.Value>
+                                                <Color>DimGray</Color>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Target="border.(Border.Background).(SolidColorBrush.Color)">
+                                            <Setter.Value>
+                                                <Color>DarkGray</Color>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="border" Height="8" Background="LightGray"
                                 VerticalAlignment="Stretch"/>
                         <Canvas MinHeight="8">
                             <Rectangle x:Name="PART_Rectangle" Fill="Yellow" Height="8" />
