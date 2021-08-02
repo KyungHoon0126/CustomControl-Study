@@ -6,27 +6,89 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="PackmanThumbStyle" TargetType="Thumb">
+            <Setter Property="Background" Value="{ThemeResource ThumbBackgroundThemeBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ThumbBorderThemeBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image Height="30" Source="Assets/Pacman_HD.png"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PacmanSliderStyle" TargetType="local:SimpleSlider" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:SimpleSlider">
+                        <Grid x:Name="grid" Height="30">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="VisualStateGroup">
+                                    <VisualState x:Name="NormalState"/>
+                                    <VisualState x:Name="DisabledState">
+                                        <VisualState.Setters>
+                                            <Setter Target="PART_Thumb.(Control.Background).(SolidColorBrush.Color)">
+                                                <Setter.Value>
+                                                    <Color>LightGray</Color>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Target="PART_Rectangle.(Shape.Fill).(SolidColorBrush.Color)">
+                                                <Setter.Value>
+                                                    <Color>DimGray</Color>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Target="border.(Border.Background).(SolidColorBrush.Color)">
+                                                <Setter.Value>
+                                                    <Color>DarkGray</Color>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="border" Height="30" Background="Transparent"
+                    			VerticalAlignment="Stretch"/>
+                            <Line StrokeThickness="10" Stroke="Blue" StrokeDashArray="1" VerticalAlignment="Center" Margin="0,4,0,0" X2="1000"/>
+                            <Canvas MinHeight="30">
+                                <Rectangle x:Name="PART_Rectangle" Fill="White" Height="30" />
+                                <Thumb x:Name="PART_Thumb" Height="30" Width="30" Style="{StaticResource PackmanThumbStyle}" />
+                            </Canvas>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="115*"/>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="115*" />
         </Grid.RowDefinitions>
-
-        <TextBlock Text="CustomControl Sample" 
-                   Style="{StaticResource TitleTextBlockStyle}"/>
-
-        <StackPanel Grid.Row="1"
-                    VerticalAlignment="Center" 
-                    Margin="20,235,20,300">
-
-            <local:SimpleSlider x:Name="simpleSlider" 
-                                Height="20" 
-                                Maximum="100"/>
-            <TextBlock Text="{Binding Value, ElementName=simpleSlider}"/>
-
+        <TextBlock Text="CustomControl Sample" Style="{StaticResource TitleTextBlockStyle}" />
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Margin="10,0">
+            <local:SimpleSlider x:Name="simpleSlider" Height="30" Maximum="100" Value="50"/>
+            <TextBlock Text="{Binding Value, ElementName=simpleSlider}" HorizontalAlignment="Center" />
             <ToggleSwitch Header="SimpleSlider"
-                          IsOn="{Binding IsEnabled, ElementName=simpleSlider, Mode=TwoWay}" />
+                          IsOn="{Binding IsEnabled, ElementName=simpleSlider, Mode=TwoWay}" Margin="0,0,0,20" />
+            <local:SimpleSlider x:Name="PackmanSlider" Height="30" Maximum="100" Value="50" 
+            	Style="{StaticResource PacmanSliderStyle}" />
+            <TextBlock Text="{Binding Value, ElementName=simpleSlider}" HorizontalAlignment="Center" />
+            <ToggleSwitch Header="PackmanSlider"
+            	IsOn="{Binding IsEnabled, ElementName=PackmanSlider, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </Page>
