@@ -1,0 +1,49 @@
+﻿<Window x:Class="AttachedPropertyStudy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AttachedPropertyStudy"
+        xmlns:commons="clr-namespace:AttachedPropertyStudy.Commons"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        --><!--
+            DockPanel, Canvas 컨트롤의 특징 : 하위 아이템들이 자신의 위치를 지정할 때 부모의 프로퍼티 값을 변경하는 구조.
+        --><!--
+        <Grid Grid.Column="0">
+            <Canvas>
+                --><!--Rectangle의 위치를 이동 시키기 위해 자식 컨트롤 Rectangle에서 부모 컨트롤 Canvas의 속성을 변경함.-->
+                <!--이런식으로 프로퍼티를 사용해야 한다면, AttachedProperty를 사용해야 한다.--><!--
+                <Rectangle Width="100" Height="100" Fill="Red"
+                               Canvas.Left="100" Canvas.Top="100"/>
+            </Canvas>
+        </Grid>
+    </Grid>-->
+
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="TitleRow" Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="TitlePage"
+                   x:Uid="Main_Title"/>
+
+        <Grid Grid.Row="1">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Property Sample" Margin="20"/>
+                
+                <TextBlock Text="PasswordBox"/>
+                <PasswordBox x:Name="passwordBox" commons:ExProperties.IsPasswordBindable="True"/>
+                
+                <TextBlock Text="Password you entered"/>
+                <TextBlock Text="{Binding (commons:ExProperties.BindablePassword), ElementName=passwordBox}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
